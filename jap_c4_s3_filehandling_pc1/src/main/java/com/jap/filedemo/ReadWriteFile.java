@@ -18,7 +18,7 @@ public class ReadWriteFile {
 
 		/*********************** Read the data *****************/
 
-		File file = new File("E:\\Farzi\\pc1\\input.txt");
+		File file = new File("input.txt");
 
 		FileReader reader = new FileReader(file);
 
@@ -42,22 +42,24 @@ public class ReadWriteFile {
 
 		String updatedContent = "";
 
-		for (String name : names) {
+		for (int i = 0; i < names.length; i++) {
+			String name = names[i];
 			String updateName = transform(name);
-			updatedContent = updatedContent + updateName + ",";
+			updatedContent = updatedContent + updateName;
+			if (i != names.length - 1) {
+				updatedContent = updatedContent + ",";
+			}
 		}
 
 		/*********************** Write the data *****************/
 
-		File output = new File("E:\\Farzi\\pc1\\output.txt");
+		File output = new File("output.txt");
 
 		FileWriter writer = new FileWriter(output);
 
 		writer.write(updatedContent);
 
 		writer.close();
-		
-		System.out.println("Done");
 
 	}
 
