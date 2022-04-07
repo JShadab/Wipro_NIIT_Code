@@ -1,7 +1,9 @@
 package com.niit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.niit.entity.Booking;
 import com.niit.entity.Flight;
@@ -30,9 +32,23 @@ public class Main {
 		allPassengers.add(passenger1);
 		allPassengers.add(passenger2);
 
-		Booking booking = new Booking(flight1, allPassengers, "12-04-2022");
-		
-		booking.display();
+		Booking booking1 = new Booking(flight1, allPassengers, "10-04-2022");
+		Booking booking2 = new Booking(flight3, allPassengers, "09-04-2022");
+		Booking booking3 = new Booking(flight4, allPassengers, "08-04-2022");
+
+		Booking searchedBooking = Booking.searchBooking(booking2.getPnr());
+
+		if (searchedBooking != null) {
+			searchedBooking.display();
+		} else {
+			System.out.println("Invalid PNR..");
+		}
+
+		System.out.println(Booking.getBookings());
+
+		Booking.cancelBooking(booking2.getPnr());
+
+		System.out.println(Booking.getBookings());
 
 	}
 

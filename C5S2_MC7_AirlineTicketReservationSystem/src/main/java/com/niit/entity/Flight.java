@@ -31,7 +31,7 @@ public class Flight {
 
 		travelDateVsSeats.put("07-04-2022", 30);
 		travelDateVsSeats.put("08-04-2022", 30);
-		travelDateVsSeats.put("08-04-2022", 0);
+		travelDateVsSeats.put("09-04-2022", 10);
 		travelDateVsSeats.put("10-04-2022", 50);
 		travelDateVsSeats.put("11-04-2022", 30);
 	}

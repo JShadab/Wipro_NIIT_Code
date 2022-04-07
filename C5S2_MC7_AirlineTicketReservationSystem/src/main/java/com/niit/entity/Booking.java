@@ -1,5 +1,6 @@
 package com.niit.entity;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -14,31 +15,42 @@ public class Booking {
 	private String pnr;
 	private double totalFare;
 
+	static Map<String, Booking> bookings = new HashMap<String, Booking>();
+
 	public Booking(Flight flight, List<Passenger> passengers, String travelDate) {
 		super();
 		this.setFlight(flight);
 		this.passengers = passengers;
 		this.travelDate = travelDate;
-		
-		updateSeatAvailability();
 
-		generatePNR();	
+		updateSeatAvailability(true);
+
+		generatePNR();
 
 		calculateTotalFare();
+
+		saveBooking();
 	}
 
-	private void updateSeatAvailability() {
+	private void updateSeatAvailability(boolean isBooked) {
 
 		Map<String, Integer> map = flight.getTravelDateVsSeats();
 		Integer availableSeats = map.get(travelDate);
 
-		if (availableSeats == null || availableSeats == 0 || availableSeats < passengers.size()) {
-			throw new NoSeatAvailableException("No Flighta are available for " + travelDate + " date");
+		if (isBooked) {
+
+			if (availableSeats == null || availableSeats == 0 || availableSeats < passengers.size()) {
+				throw new NoSeatAvailableException("No Flights are available for " + travelDate + " date");
+			}
+
+			availableSeats = availableSeats - passengers.size();
+
+			map.put(travelDate, availableSeats);
+		} else {
+
+			availableSeats = availableSeats + passengers.size();
+
 		}
-
-		availableSeats = availableSeats - passengers.size();
-
-		map.put(travelDate, availableSeats);
 
 	}
 
@@ -53,11 +65,14 @@ public class Booking {
 
 	private void generatePNR() {
 
-		Random random = new Random(6);
+		Random random = new Random();
 
 		int rand = random.nextInt();
 
-		this.pnr = travelDate + "_" + flight.getOrigin() + "_" + flight.getDestination() + "_" + rand;
+		this.pnr = String.valueOf(rand);
+
+		// this.pnr = travelDate + "_" + flight.getOrigin() + "_" +
+		// flight.getDestination() + "_" + rand;
 
 	}
 
@@ -89,6 +104,10 @@ public class Booking {
 		this.flight = flight;
 	}
 
+	private void saveBooking() {
+		bookings.put(getPnr(), this);
+	}
+
 	public void display() {
 
 		System.out.println(
@@ -114,5 +133,29 @@ public class Booking {
 		System.out.println("Total Fare: " + getTotalFare());
 
 	}
+
+	public static Booking searchBooking(String pnr) {
+
+		return bookings.get(pnr);
+	}
+
+	static public void cancelBooking(String pnr) {
+
+		Booking booking = bookings.remove(pnr);
+		booking.updateSeatAvailability(false);
+
+	}
+	
+	public static Map<String, Booking> getBookings() {
+		return bookings;
+	}
+
+	@Override
+	public String toString() {
+		return "Booking [flight=" + flight + ", passengers=" + passengers + ", travelDate=" + travelDate + ", pnr="
+				+ pnr + ", totalFare=" + totalFare + "]";
+	}
+	
+	
 
 }
