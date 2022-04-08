@@ -3,6 +3,7 @@ package com.niit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 public class Task1 {
 
@@ -14,9 +15,8 @@ public class Task1 {
 	}
 
 	private static void readAndDisplayRoutes() throws Exception {
-		int size = lineCount();
 
-		String[] routeArr = new String[size];
+		ArrayList<String> routeList = new ArrayList<String>();
 
 		File file = new File(fileName);
 		FileReader fr = new FileReader(file);
@@ -24,38 +24,18 @@ public class Task1 {
 
 		String line = null;
 
-		int index = 0;
 		while ((line = br.readLine()) != null) {
 
-			if (index == 0) {
-				index++;
-				continue;
-			}
-
-			routeArr[index - 1] = line;
-			index++;
+			routeList.add(line);
 		}
 
 		br.close();
 
-		for (String route : routeArr) {
+		for (String route : routeList) {
 			System.out.println(route);
 
 		}
 
-	}
-
-	static int lineCount() throws Exception {
-
-		File file = new File(fileName);
-		FileReader fr = new FileReader(file);
-		BufferedReader br = new BufferedReader(fr);
-
-		long count = br.lines().count() - 1;
-
-		br.close();
-
-		return (int) count;
 	}
 
 }
